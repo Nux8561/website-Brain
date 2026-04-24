@@ -1,89 +1,161 @@
+import { useEffect, useRef } from "react";
 import { motion } from "motion/react";
-import { ArrowUpRight, Play } from "lucide-react";
+import { ArrowUpRight, UtensilsCrossed } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BlurText } from "@/components/BlurText";
-import { ScrubSequence } from "@/components/ScrubSequence";
-import { FRAMES_PATH, FRAME_COUNT, FRAME_EXT } from "@/lib/constants";
-import { HERO, BRAND, PARTNERS, CTA, IS_FR } from "@/lib/content";
+import { GoogleRatingHero } from "@/components/GoogleRating";
+import {
+  HERO,
+  BRAND,
+  PARTNERS,
+  RESERVE_URL,
+  MENU_URL,
+  UI,
+  HERO_VIDEO,
+  HERO_VIDEO_REMOTE,
+} from "@/lib/content";
 
-export function Hero({ scrollRef }: { scrollRef: React.RefObject<HTMLElement> }) {
+function heroVideoSrc(): string {
+  const env = import.meta.env.VITE_HERO_VIDEO_URL?.trim();
+  if (env) return env;
+  const local = HERO_VIDEO_REMOTE.trim();
+  if (local) return local;
+  return "";
+}
+
+function tryPlay(el: HTMLVideoElement | null) {
+  if (!el) return;
+  const p = el.play();
+  if (p !== undefined) void p.catch(() => {});
+}
+
+export function Hero() {
+  const poster = HERO_VIDEO.poster;
+  const mp4 = HERO_VIDEO.srcMp4;
+  const remote = heroVideoSrc();
+  const isRemote = remote.length > 0;
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    tryPlay(el);
+    const onVis = () => {
+      if (document.visibilityState === "visible") tryPlay(el);
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, [isRemote, remote]);
+
   return (
-    <section ref={scrollRef} className="relative h-[250vh] bg-background">
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        <ScrubSequence
-          framesPath={FRAMES_PATH}
-          frameCount={FRAME_COUNT}
-          ext={FRAME_EXT}
-          scrollTargetRef={scrollRef}
-          className="absolute inset-0 w-full h-full z-0"
+    <section id="top" className="relative min-h-screen bg-background overflow-hidden">
+      {isRemote ? (
+        <video
+          ref={videoRef}
+          className="absolute inset-0 z-0 h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster={poster}
+          aria-hidden
+          src={remote}
         />
-        <p className="sr-only">
-          Cinematic scroll-scrubbed sequence showing the {BRAND.name} signature.
-        </p>
-        <div className="absolute inset-0 z-[1] bg-[radial-gradient(120%_80%_at_50%_60%,transparent_40%,rgba(0,0,0,0.55)_100%)]" />
-        <div className="absolute bottom-0 inset-x-0 h-[40vh] z-[2] gradient-fade-b" />
+      ) : (
+        <video
+          ref={videoRef}
+          className="absolute inset-0 z-0 h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster={poster}
+          aria-hidden
+        >
+          {mp4 ? <source src={mp4} type="video/mp4" /> : null}
+          <source src={HERO_VIDEO.srcWebm} type="video/webm" />
+        </video>
+      )}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-black/55 via-black/40 to-black/70" />
+      <div className="absolute inset-0 z-[2] bg-[radial-gradient(90%_70%_at_50%_25%,hsl(38_40%_18%/0.25),transparent_60%)]" />
+      <div className="absolute inset-0 z-[3] noise opacity-35" />
+      <div className="absolute bottom-0 inset-x-0 h-[26vh] z-[4] gradient-fade-b" />
 
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <div className="liquid-glass rounded-full px-1 py-1 inline-flex items-center gap-2">
-              <span className="bg-foreground text-background rounded-full px-3 py-1 text-xs font-semibold">
-                {HERO.badge}
-              </span>
-              <span className="pr-3 text-sm text-foreground/85">{BRAND.tagline}</span>
-            </div>
-          </motion.div>
-
-          <BlurText
-            text={HERO.headline}
-            as="h1"
-            className="mt-6 font-display uppercase text-[clamp(56px,9vw,144px)] leading-[0.92] tracking-[-0.02em] text-foreground max-w-[14ch]"
-            delay={0.09}
-            startDelay={0.15}
-          />
-
-          <motion.p
-            initial={{ filter: "blur(10px)", opacity: 0, y: 16 }}
-            animate={{ filter: "blur(0)", opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-6 font-body text-base md:text-lg text-foreground/70 max-w-xl leading-relaxed"
-          >
-            {HERO.sub}
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.1, duration: 0.6 }}
-            className="mt-10 flex items-center gap-3"
-          >
-            <Button variant="hero" asChild>
-              <a href={CTA.href}>
-                {HERO.primary} <ArrowUpRight className="ml-1 size-4" />
-              </a>
-            </Button>
-            <Button variant="heroGlass">
-              <Play className="mr-1.5 size-4 fill-current" /> {HERO.secondary}
-            </Button>
-          </motion.div>
-
-          <div className="absolute bottom-10 inset-x-0 flex flex-col items-center gap-4">
-            <span className="liquid-glass rounded-full px-4 py-1.5 text-xs font-body text-foreground/80">
-              {IS_FR ? "Ils nous font confiance" : "Trusted by"}
+      <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 min-h-screen pt-28 pb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="flex flex-col items-center gap-4"
+        >
+          <div className="pill-label inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 px-4 py-2">
+            <span className="text-primary font-medium tracking-wide">{HERO.badge}</span>
+            <span className="text-foreground/70 hidden sm:inline">·</span>
+            <span className="font-ristorante italic text-foreground/90 text-base md:text-lg">
+              {BRAND.tagline}
             </span>
-            <div className="flex items-center gap-8 md:gap-14 flex-wrap justify-center px-6">
-              {PARTNERS.map((p) => (
-                <span
-                  key={p}
-                  className="font-display italic text-xl md:text-2xl text-foreground/70 tracking-tight"
-                >
-                  {p}
-                </span>
-              ))}
-            </div>
+          </div>
+          <GoogleRatingHero />
+        </motion.div>
+
+        <BlurText
+          text={HERO.headline}
+          as="h1"
+          className="mt-8 font-display uppercase text-[clamp(38px,7.5vw,108px)] leading-[0.92] tracking-[-0.02em] text-foreground max-w-[20ch]"
+          delay={0.08}
+          startDelay={0.12}
+        />
+        <motion.h2
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-3 font-ristorante text-[clamp(1.35rem,3.5vw,2.4rem)] italic text-primary tracking-wide"
+        >
+          {HERO.headlineLine2}
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.72, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-6 font-body text-base md:text-lg text-foreground/82 max-w-2xl leading-relaxed"
+        >
+          {HERO.sub}
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.95, duration: 0.55 }}
+          className="mt-10 flex flex-col sm:flex-row items-center gap-3"
+        >
+          <Button variant="hero" asChild>
+            <a href={RESERVE_URL} target="_blank" rel="noopener noreferrer">
+              {HERO.primary} <ArrowUpRight className="ml-1 size-4" />
+            </a>
+          </Button>
+          <Button variant="heroGlass" asChild>
+            <a href={MENU_URL} target="_blank" rel="noopener noreferrer">
+              <UtensilsCrossed className="mr-1.5 size-4" /> {HERO.secondary}
+            </a>
+          </Button>
+        </motion.div>
+
+        <div className="mt-auto pt-14 flex flex-col items-center gap-4 w-full max-w-3xl">
+          <span className="font-ristorante text-sm md:text-base italic text-foreground/60">
+            {UI.trustedBy}
+          </span>
+          <div className="flex items-center gap-6 md:gap-12 flex-wrap justify-center px-4">
+            {PARTNERS.map((p) => (
+              <span
+                key={p}
+                className="font-ristorante italic text-lg md:text-xl text-primary/85 tracking-wide"
+              >
+                {p}
+              </span>
+            ))}
           </div>
         </div>
       </div>

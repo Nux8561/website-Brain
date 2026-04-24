@@ -1,0 +1,15 @@
+---
+description: Website Brain — Default-Workflow (Plane + Google → content.ts)
+globs: "**/*"
+alwaysApply: false
+---
+
+# Website Brain
+
+Wenn `WEBSITE-PLANE.md` und/oder `GOOGLE.url.txt` im Projektroot existieren:
+
+1. Lies beide Dateien zuerst.
+2. Wende `docs/GOOGLE-INGEST.md` (im Ordner „website Brain“) an: sichtbare Maps-Daten → `src/lib/content.ts` → `GOOGLE_PLACE`, passende URLs (`reviewsUrl`, `directionsUrl`, `embedUrl`).
+3. Übernimm Copy aus der Plane in `content.ts` und `index.html` (title, description, `html lang`).
+4. Standard-Hero ist **Video** (`hero.mp4` vor `hero.webm` in `Hero.tsx`); kein Umstieg auf Canvas-Scrub, außer der Nutzer fordert den Modus aus `docs/MODE-CINEMATIC-SCRUB.md` explizit.
+5. Keine Emoji in UI-Copy; Anti-Slop siehe `docs/CHECKLIST.md`.

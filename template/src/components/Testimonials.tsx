@@ -1,12 +1,12 @@
 import { Quote } from "lucide-react";
 import { BlurText } from "@/components/BlurText";
-import { TESTIMONIALS, TESTIMONIALS_HEADLINE, IS_FR } from "@/lib/content";
+import { TESTIMONIALS, TESTIMONIALS_HEADLINE, UI } from "@/lib/content";
 
 type T = (typeof TESTIMONIALS)[number];
 
 function Card({ quote, name, role }: T) {
   return (
-    <div className="liquid-glass rounded-2xl p-7 w-[340px] md:w-[400px] shrink-0 flex flex-col gap-5">
+    <div className="ristorante-card rounded-2xl p-7 w-[340px] md:w-[400px] shrink-0 flex flex-col gap-5">
       <Quote className="size-5 text-primary/70" />
       <p className="font-body text-foreground/85 italic leading-relaxed text-[15px]">
         {quote}
@@ -31,11 +31,9 @@ export function Testimonials() {
   const rowB = [...second, ...second];
 
   return (
-    <section id="testimonials" className="relative py-28 md:py-40 border-t border-border/40">
+    <section id="testimonials" className="relative py-28 md:py-40 border-t border-primary/10">
       <div className="max-w-[var(--max)] mx-auto px-[var(--gutter)] flex flex-col items-start gap-5">
-        <span className="liquid-glass rounded-full px-4 py-1.5 text-xs text-foreground/80">
-          {IS_FR ? "Témoignages" : "Testimonials"}
-        </span>
+        <span className="pill-label">{UI.testimonialsKicker}</span>
         <BlurText
           text={TESTIMONIALS_HEADLINE}
           className="font-display uppercase text-4xl md:text-6xl leading-[0.9] tracking-tight max-w-[22ch]"

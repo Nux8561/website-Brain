@@ -15,3 +15,8 @@ lerna-debug.log*
 
 # Source video — frames are extracted into /public/frames (which ships)
 /input
+
+# tsc / tooling emit (keep vite.config.ts as source of truth)
+*.tsbuildinfo
+vite.config.d.ts
+vite.config.js

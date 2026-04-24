@@ -1,77 +1,42 @@
-import { motion, useInView, useMotionValue, useTransform, animate } from "motion/react";
-import { useEffect, useRef } from "react";
+import { motion } from "motion/react";
+import { Clock } from "lucide-react";
 import { BlurText } from "@/components/BlurText";
-import { STATS, STATS_BG_VIDEO, IS_FR } from "@/lib/content";
-
-function StatValue({ value }: { value: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.6 });
-  const count = useMotionValue(0);
-
-  const match = value.match(/^(\d+)(.*)$/);
-  const target = match ? parseInt(match[1], 10) : 0;
-  const suffix = match ? match[2] : "";
-
-  const rounded = useTransform(count, (v) => Math.round(v).toString() + suffix);
-
-  useEffect(() => {
-    if (inView && match) {
-      const controls = animate(count, target, {
-        duration: 1.8,
-        ease: [0.22, 1, 0.36, 1],
-      });
-      return controls.stop;
-    }
-  }, [inView, target, count, match]);
-
-  if (!match) {
-    return <span ref={ref}>{value}</span>;
-  }
-  return <motion.span ref={ref}>{rounded}</motion.span>;
-}
+import { OPENING_ROWS, OPENING_NOTE, UI } from "@/lib/content";
 
 export function Stats() {
   return (
-    <section className="relative py-32 md:py-44 overflow-hidden">
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        src={STATS_BG_VIDEO}
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ filter: "saturate(0)" }}
-      />
-      <div className="absolute top-0 inset-x-0 h-[200px] gradient-fade-t z-[1]" />
-      <div className="absolute bottom-0 inset-x-0 h-[200px] gradient-fade-b z-[1]" />
-
+    <section id="hours" className="relative py-24 md:py-32 overflow-hidden border-t border-primary/15 bg-[radial-gradient(ellipse_100%_80%_at_50%_0%,hsl(38_25%_12%/0.35),transparent_55%)]">
       <div className="max-w-[var(--max)] mx-auto px-[var(--gutter)] relative z-10">
-        <div className="flex flex-col items-center gap-5 text-center mb-12">
-          <span className="liquid-glass rounded-full px-4 py-1.5 text-xs text-foreground/80">
-            {IS_FR ? "Les chiffres" : "By the numbers"}
-          </span>
+        <div className="flex flex-col items-center gap-4 text-center mb-12">
+          <span className="pill-label">{UI.statsKicker}</span>
           <BlurText
-            text={IS_FR ? "Preuves, pas promesses." : "Proof, not promises."}
-            className="font-display uppercase text-4xl md:text-6xl leading-[0.9] tracking-tight max-w-[18ch]"
+            text={UI.statsHeadline}
+            className="font-display uppercase text-4xl md:text-6xl leading-[0.9] tracking-tight max-w-[20ch]"
           />
         </div>
 
-        <div className="liquid-glass rounded-3xl p-10 md:p-14 relative">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-            {STATS.map((s, i) => (
-              <div key={i} className="relative flex flex-col">
-                <span className="font-display italic text-5xl md:text-6xl lg:text-7xl leading-none text-foreground">
-                  <StatValue value={s.value} />
-                </span>
-                <span className="font-body text-sm text-foreground/60 mt-3 tracking-wide uppercase">
-                  {s.label}
-                </span>
-                {i < STATS.length - 1 && (
-                  <div className="hidden md:block absolute top-1/2 -translate-y-1/2 -right-6 w-px h-12 bg-border" />
-                )}
-              </div>
-            ))}
+        <div className="ristorante-card rounded-3xl p-8 md:p-12 max-w-2xl mx-auto">
+          <div className="flex items-center gap-3 mb-8 text-primary">
+            <Clock className="size-6 shrink-0" strokeWidth={1.5} />
+            <span className="font-ristorante text-2xl md:text-3xl italic text-foreground/90">
+              Küche & Service
+            </span>
           </div>
+          <ul className="space-y-5 font-body">
+            {OPENING_ROWS.map((row) => (
+              <motion.li
+                key={row.days}
+                initial={{ opacity: 0, x: -8 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 border-b border-primary/10 pb-5 last:border-0 last:pb-0"
+              >
+                <span className="text-foreground/80">{row.days}</span>
+                <span className="font-medium text-primary tabular-nums">{row.hours}</span>
+              </motion.li>
+            ))}
+          </ul>
+          <p className="mt-8 text-sm text-foreground/55 leading-relaxed">{OPENING_NOTE}</p>
         </div>
       </div>
     </section>

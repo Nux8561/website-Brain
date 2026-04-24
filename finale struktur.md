@@ -1,43 +1,54 @@
-Ich werde den Werkzeugkasten als vollständiges Template aufbauen. Plan:
+# Website Brain — finale Struktur (Stand 2026)
 
-- `template/` – komplettes Vite+React+TS Boilerplate mit allen 9 Sektionen
-- `scripts/` – ffmpeg Frame-Extraktion (bash + node)
-- `docs/` – Anleitungen
-
-Werkzeugkoffer ist komplett aufgebaut. Hier die finale Struktur:
+Der Werkzeugkoffer ist in zwei **klare Einstiege** geteilt: **Default = Video-Hero + Google**, optional **Cinematic Scrub** (Canvas-Frames) per Doku + `prompt.md`.
 
 ```
 website Brain/
-├── README.md                              # Toolkit-Übersicht
-├── prompt.md                              # (unverändert) Master-Prompt
+├── AGENTS.md                      # Cursor / Agent — Plane + Google → content.ts
+├── README.md                      # Überblick + Workflow
+├── prompt.md                      # Mega-Prompt: Frame-Scrub-Spezifikation (Legacy-Hero-Pfad)
+├── finale struktur.md             # diese Datei
+├── inputs/
+│   ├── README.md
+│   ├── WEBSITE-PLANE.template.md  # → pro Projekt: WEBSITE-PLANE.md
+│   └── GOOGLE.url.example.txt     # → pro Projekt: GOOGLE.url.txt (eine Zeile URL)
 ├── docs/
-│   ├── USAGE.md                           # Schritt-für-Schritt-Anleitung
-│   ├── PLACEHOLDER_EXAMPLES.md            # Gut/Schlecht Beispiele je Placeholder
-│   └── CHECKLIST.md                       # Pre-Ship Anti-Slop Checkliste
+│   ├── FAST-TRACK.md
+│   ├── GOOGLE-INGEST.md
+│   ├── MODE-CINEMATIC-SCRUB.md
+│   ├── USAGE.md
+│   ├── CHECKLIST.md
+│   └── PLACEHOLDER_EXAMPLES.md
 ├── scripts/
-│   ├── extract-frames.sh                  # ffmpeg Frame-Extraktion
-│   └── extract-frames.mjs                 # WASM Fallback (kein ffmpeg nötig)
-└── template/                              # Komplettes Vite+React+TS Boilerplate
-    ├── package.json, vite.config.ts, tsconfig.json, index.html, .gitignore
-    ├── components.json, postcss.config.js
-    ├── public/{logo.svg, frames/.gitkeep}
+│   ├── extract-frames.sh
+│   ├── extract-frames.mjs
+│   └── encode-hero.ps1            # WebM + MP4 + Poster (Windows / ffmpeg)
+├── .cursor/rules/
+│   └── website-brain.mdc          # optional ins Kundenprojekt kopieren
+└── template/                      # Vite-App (Default = Barist-Stand: Video, Google, Bento, …)
+    ├── package.json, vite.config.ts, tsconfig.json, index.html, …
+    ├── public/
+    │   ├── logo.svg
+    │   ├── hero.webm, hero.mp4, hero-poster.webp
+    │   └── frames/                # nur für Scrub-Modus nötig
     └── src/
-        ├── App.tsx, main.tsx, index.css, vite-env.d.ts
-        ├── lib/{utils, constants, content, icons}.ts
+        ├── App.tsx, main.tsx, index.css
+        ├── lib/content.ts, icons.ts, utils.ts
         └── components/
-            ├── ui/{button, accordion}.tsx   # shadcn
-            ├── ScrubSequence.tsx            # Canvas Frame-Scrub
-            ├── BlurText.tsx                 # Word-stagger Animation
-            └── {Navbar,Hero,ServicesBento,Pourquoi,Process,Stats,Testimonials,Faq,CtaFooter}.tsx
+            ├── Hero.tsx           # Default: <video>
+            ├── GoogleRating.tsx, FindUsMap.tsx
+            ├── ScrubSequence.tsx # vorhanden für optionalen Modus
+            └── … (Navbar, Bento, FAQ, …)
 ```
 
-**Alle 9 Sektionen aus prompt.md sind implementiert**, mit allen Anti-Slop-Regeln, liquid-glass Utilities, Tailwind v4 `@theme`, Palette + Fonts, Motion-Patterns (BlurText, fade-up-on-view, Marquee, Scroll-Scrub).
+## Workflow neues Kundenprojekt (Default)
 
-**Workflow für neues Kundenprojekt:**
+1. `template/` kopieren → `npm install`.
+2. `WEBSITE-PLANE.md` + `GOOGLE.url.txt` im **Projektroot** anlegen (Vorlagen unter `inputs/`).
+3. `docs/GOOGLE-INGEST.md` befolgen → `content.ts` + `index.html`.
+4. Hero encoden (`encode-hero.ps1` o. Ä.) → `public/`.
+5. `npm run dev` → `docs/CHECKLIST.md` (Default-Abschnitt).
 
-1. `template/` kopieren → `npm install`
-2. Video nach `input/source.mp4` → `bash scripts/extract-frames.sh 30 jpg`
-3. `FRAME_COUNT` in [constants.ts](template/src/lib/constants.ts) eintragen
-4. Copy in [content.ts](template/src/lib/content.ts) befüllen
-5. Palette in [index.css](template/src/index.css) tunen → `npm run dev`
+## Workflow Scrub-Modus
 
+Siehe `docs/MODE-CINEMATIC-SCRUB.md` + Frame-Scripts + Anpassung von `Hero.tsx`.

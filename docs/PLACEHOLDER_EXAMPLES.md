@@ -1,5 +1,7 @@
 # Placeholder-Beispiele
 
+Für den **aktuellen Default** (Video-Hero + Google) siehe auch [FAST-TRACK.md](FAST-TRACK.md) und `inputs/WEBSITE-PLANE.template.md` — dort ist der Copy-Flow ohne `{{PLACEHOLDER}}`-Syntax beschrieben.
+
 Jeder Placeholder aus `prompt.md` mit einem guten + einem schlechten Beispiel.
 Gut = editorial, cinematic, spezifisch. Schlecht = generic AI-slop.
 

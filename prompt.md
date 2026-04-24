@@ -1,5 +1,7 @@
 # MEGA-PROMPT TEMPLATE — One-Shot Cinematic Landing Page (Video Scroll-Scrub)
 
+> **Website Brain (2026):** Der **Default** im Ordner `template/` ist eine Landing mit **Video-Hero** (WebM + MP4) und **`GOOGLE_PLACE`** (Bewertung + Karte), nicht mit Canvas-Frame-Scrub. Für den schnellen Ablauf mit Plane + Google siehe `docs/FAST-TRACK.md` und `docs/GOOGLE-INGEST.md`. Dieses Dokument bleibt die **vollständige Spezifikation** für den **Scroll-scrubbten Canvas-/Frame-Hero** (AirPods-Pro-Stil) und für One-Shot-Generierung aus Platzhaltern.
+
 > Fill every `{{PLACEHOLDER}}` below, then paste the whole document into your generating model (Lovable, v0, Cursor, Claude, etc.) as a SINGLE prompt. Do NOT split it. The model must produce a working Vite app in one shot.
 
 ---

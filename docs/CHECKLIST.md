@@ -1,71 +1,72 @@
 # Pre-Ship Checklist
 
-Abhaken vor jedem Release. Entspricht `prompt.md` Sektion 22 (Anti-Slop) + 23 (Verification).
+Vor jedem Release. Anti-Slop-Regeln gelten für **beide** Modi.
 
-## Build
+## Build (immer)
 
-- [ ] `npm run dev` startet ohne Error und öffnet eine Localhost-URL.
-- [ ] `npm run build` läuft ohne TypeScript- oder Vite-Error durch.
-- [ ] `npm run preview` rendert identisch zu dev.
+- [ ] `npm run dev` startet ohne Error.
+- [ ] `npm run build` ohne TypeScript- oder Vite-Fehler.
+- [ ] `npm run preview` entspricht dev.
 
-## Hero / Frame-Sequence
+---
 
-- [ ] Erster Paint zeigt `frame_0001.jpg` innerhalb von 300ms.
-- [ ] Scrollen scrubbt die Canvas smooth (kein Stall > 50ms).
-- [ ] Mindestens `FRAME_COUNT / 2.5` verschiedene Frames während des Scrolls sichtbar.
-- [ ] Keine 404s auf `frame_*` URLs im Network-Tab.
-- [ ] `<link rel="preload" ...>` für erstes Frame in `index.html` vorhanden.
+## Default-Modus — Video-Hero + Google
 
-## Sections
+### Hero / Video
 
-- [ ] Navbar: Pill reduziert `top-4` → `top-2` bei Scroll > 40px.
-- [ ] Navbar Mobile (< md): Burger öffnet Full-Screen Sheet mit Links.
-- [ ] ServicesBento: 6 Karten, asymmetrischer Bento-Grid auf Desktop.
-- [ ] Pourquoi: 4 Karten, gleichhoch, bottom-accent rendert.
-- [ ] Process: Nummern in 140px Display-Type, Connector-Linien auf Desktop.
-- [ ] Stats: Zahlen zählen von 0 hoch wenn in View, Suffix bleibt stabil.
-- [ ] Testimonials: Zwei Marquee-Reihen, gegenläufig, pausieren bei Hover.
-- [ ] FAQ: Accordion öffnet/schließt mit smoother height-animation.
-- [ ] CTA-Footer: Italic-Headline, zwei CTAs, Footer-Links rendern.
+- [ ] `public/hero.mp4` vorhanden (H.264, `yuv420p`) — **Safari/iOS**.
+- [ ] `public/hero.webm` vorhanden; im Markup **MP4-`<source>` vor WebM**.
+- [ ] `hero-poster.webp` gesetzt; Preload im `index.html` für Poster sinnvoll.
+- [ ] `HERO_VIDEO` in `content.ts` stimmt mit Dateinamen überein.
+- [ ] Optional: `VITE_HERO_VIDEO_URL` getestet oder leer gelassen.
 
-## Anti-Slop
+### Google / Karte
 
-- [ ] Keine Emoji anywhere (Copy, Cards, Buttons).
+- [ ] `GOOGLE_PLACE.rating` / `reviewCount` plausibel; Links öffnen korrekt.
+- [ ] `embedUrl` lädt Karte im iframe (`FindUsMap`).
+- [ ] Keine falschen Behauptungen gegenüber Google-Branding (neutral formulieren, wenn unsicher).
+
+### Sections
+
+- [ ] Navbar: Scroll-Verhalten und Mobile-Menü ok.
+- [ ] ServicesBento: 6 Karten auf Desktop-Layout.
+- [ ] Pourquoi / Process / Testimonials / FAQ / CTA wie spezifiziert.
+
+### Anti-Slop (Default)
+
+- [ ] Keine Emoji in UI-Copy.
 - [ ] Keine default violet/purple Gradients.
-- [ ] Keine `shadow-2xl` auf liquid-glass Karten.
-- [ ] Buttons `rounded-full`, Karten `rounded-2xl` — keine `rounded-xl` Mittelstufen.
-- [ ] Keine Lorem-Platzhalter im Output.
-- [ ] Body-Paragraphen links-aligned (außer Hero + CTA).
-- [ ] Alle Headings entweder `font-display uppercase tracking-tight` ODER `font-display italic` — nie beides gleichzeitig.
-- [ ] Jede Section hat Badge + BlurText + Sub (außer Hero und Footer).
+- [ ] Kein `<video>`-Only-WebM ohne MP4 in Produktion.
+- [ ] Keine Lorem-Platzhalter.
 - [ ] Nur lucide-react Icons.
-- [ ] Kein `<video>` im Hero (Canvas only).
-- [ ] Keine motion-Transitions > 0.9s.
-- [ ] Keine `console.log`, kein commented-out Code, keine unused Imports.
+- [ ] Keine `console.log`, keine toten Imports.
 
-## Responsive
+### Responsive & A11y
 
-- [ ] 375px (iPhone SE): kein horizontaler Scroll.
-- [ ] Bento kollabiert zu 1 Spalte.
-- [ ] Testimonials-Marquee animiert weiter.
-- [ ] Hero Scrub rendert (auf Mobile ok wenn langsamer).
+- [ ] 375px: kein horizontaler Scroll.
+- [ ] Fokus-Ringe auf interaktiven Elementen.
+- [ ] Sinnvolle `aria-` / `sr-only` wo nötig.
 
-## Accessibility
+### Performance
 
-- [ ] Jedes interaktive Element hat `focus-visible` Ring.
-- [ ] Canvas hat `aria-hidden="true"`.
-- [ ] Hero hat `<p className="sr-only">` als Beschreibung.
-- [ ] Nav-Links haben lesbaren `aria-label` wenn nur Icon.
+- [ ] Hero-Videos nicht unnötig riesig (Bitrate/ Auflösung).
+- [ ] Lighthouse-Ziel sinnvoll (z. B. Desktop ≥ 85), LCP beobachten.
 
-## Performance
+---
 
-- [ ] Lighthouse Performance ≥ 85 (Desktop).
-- [ ] LCP < 2.5s auf 10 Mbps.
-- [ ] Public `frames/` Ordner < 20 MB (Vercel Hobby limit = 100 MB total).
-- [ ] Keine ungenutzten Fonts geladen (nur benötigte weights in index.css).
+## Cinematic-Scrub-Modus — Canvas + Frames
+
+*Nur relevant, wenn der Hero bewusst auf `ScrubSequence` + `public/frames/` umgestellt ist.*
+
+- [ ] Erster Frame schnell sichtbar; Scroll scrubbt flüssig.
+- [ ] Keine 404 auf `frame_*` im Network.
+- [ ] Preload für erstes Frame in `index.html`.
+- [ ] `public/frames` Gesamtgröße im Hosting-Limit (z. B. Vercel Hobby).
+
+---
 
 ## Konsole
 
-- [ ] Keine React warnings.
-- [ ] Keine unhandled promise rejections.
-- [ ] Keine 404s.
+- [ ] Keine React-Warnungen.
+- [ ] Keine unhandled Promise Rejections.
+- [ ] Keine 404 auf kritischen Assets.

@@ -7,17 +7,21 @@
 @import "@fontsource/inter/400.css";
 @import "@fontsource/inter/500.css";
 @import "@fontsource/inter/600.css";
+@import "@fontsource/cormorant-garamond/400-italic.css";
+@import "@fontsource/cormorant-garamond/500-italic.css";
 
 @import "tailwindcss";
 
 :root {
-  /* Raw palette (HSL triplets — no hsl() wrapper, so we can do alpha in Tailwind) */
-  --ink:    20 15% 9%;
-  --cream:  40 30% 90%;
-  --ochre:  32 55% 65%;
-  --terra:  14 55% 31%;
+  /*
+   * Barist-Palette — orientiert an barist.de (dunkles Theme, Akzent #d8b892)
+   * #d8b892 ≈ 38 48% 71% (warmes Sandgold)
+   */
+  --ink:    28 22% 6%;
+  --cream:  40 28% 94%;
+  --ochre:  38 48% 68%;
+  --terra:  8 42% 22%;
 
-  /* Semantic tokens */
   --background:        var(--ink);
   --foreground:        var(--cream);
   --card:              var(--ink);
@@ -28,22 +32,21 @@
   --primary-foreground: var(--ink);
   --secondary:         var(--terra);
   --secondary-foreground: var(--cream);
-  --muted:             240 4% 16%;
-  --muted-foreground:  40 6% 72%;
+  --muted:             28 14% 14%;
+  --muted-foreground:  38 12% 72%;
   --accent:            var(--ochre);
   --accent-foreground: var(--ink);
   --destructive:       0 72% 51%;
   --destructive-foreground: var(--cream);
-  --border:            40 30% 90% / 0.18;
-  --input:             40 30% 90% / 0.18;
+  --border:            40 28% 94% / 0.14;
+  --input:             40 28% 94% / 0.14;
   --ring:              var(--ochre);
   --radius:            0.75rem;
 
-  /* Typography roles */
   --font-display: "Oswald", "Impact", "Arial Narrow", sans-serif;
   --font-body:    "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", system-ui, sans-serif;
+  --font-ristorante: "Cormorant Garamond", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
 
-  /* Layout */
   --gutter: clamp(20px, 4.2vw, 56px);
   --max:    1440px;
 }
@@ -57,9 +60,13 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  background-image:
+    radial-gradient(ellipse 120% 70% at 50% -10%, hsl(38 28% 14% / 0.45), transparent 50%),
+    radial-gradient(ellipse 80% 50% at 100% 40%, hsl(8 35% 12% / 0.25), transparent 45%);
 }
 .font-display { font-family: var(--font-display); }
 .font-body    { font-family: var(--font-body); }
+.font-ristorante { font-family: var(--font-ristorante); }
 
 @theme {
   --color-background:       hsl(var(--background));
@@ -172,10 +179,52 @@ body {
     background: linear-gradient(to bottom, transparent 0%, hsl(var(--background)) 100%);
   }
 
+  .barist-hero-bg {
+    background:
+      radial-gradient(ellipse 120% 90% at 50% 20%, hsl(38 35% 18% / 0.55) 0%, transparent 55%),
+      radial-gradient(ellipse 80% 60% at 80% 100%, hsl(8 40% 12% / 0.5) 0%, transparent 45%),
+      linear-gradient(165deg, hsl(28 22% 8%) 0%, hsl(28 22% 5%) 45%, hsl(22 18% 4%) 100%);
+  }
+
+  .barist-section-video-fallback {
+    background:
+      radial-gradient(ellipse 100% 80% at 50% 40%, hsl(38 30% 14% / 0.4) 0%, transparent 60%),
+      linear-gradient(180deg, hsl(28 22% 7%) 0%, hsl(22 20% 5%) 100%);
+  }
+
   .noise::after {
     content: "";
     position: absolute; inset: 0;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
     opacity: .5; mix-blend-mode: overlay; pointer-events: none;
+  }
+
+  .pill-label {
+    @apply rounded-full px-4 py-1.5 text-xs tracking-wide uppercase;
+    font-family: var(--font-display);
+    letter-spacing: 0.12em;
+    color: hsl(var(--foreground) / 0.78);
+    background: linear-gradient(145deg, hsl(38 22% 14% / 0.95), hsl(28 18% 10% / 0.98));
+    border: 1px solid hsl(var(--primary) / 0.22);
+    box-shadow: inset 0 1px 0 hsl(40 30% 88% / 0.06);
+  }
+
+  .nav-shell {
+    background: linear-gradient(180deg, hsl(32 20% 12% / 0.92), hsl(26 16% 8% / 0.96));
+    border: 1px solid hsl(var(--primary) / 0.18);
+    box-shadow:
+      0 8px 32px hsl(0 0% 0% / 0.35),
+      inset 0 1px 0 hsl(40 28% 92% / 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .ristorante-card {
+    position: relative;
+    background: linear-gradient(165deg, hsl(32 18% 11% / 0.97), hsl(24 14% 7% / 0.99));
+    border: 1px solid hsl(var(--primary) / 0.2);
+    box-shadow:
+      0 4px 24px hsl(0 0% 0% / 0.25),
+      inset 0 1px 0 hsl(38 35% 40% / 0.08);
   }
 }

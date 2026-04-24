@@ -34,8 +34,7 @@ export function ScrubSequence({
     );
     const first = new Image();
     first.src = urls[0];
-    // @ts-expect-error — fetchPriority is valid but typings lag
-    first.fetchPriority = "high";
+    first.setAttribute("fetchpriority", "high");
     imgs[0] = first;
 
     urls.slice(1).forEach((src, i) => {

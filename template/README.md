@@ -1,102 +1,55 @@
-# Cinematic Landing — Project Template
+# Website Brain — Site Template (Default)
 
-Premium single-page marketing site with scroll-scrubbed frame-sequence hero.
-Vite + React 18 + TS + Tailwind v4 + shadcn/ui + Framer Motion.
+Vite + React 18 + TypeScript + Tailwind v4 + shadcn/ui + Motion. **Hero:** Fullscreen-**Video** (WebM + **MP4** für Safari/iOS). **Google:** Bewertungszeile + eingebettete Karte (`GOOGLE_PLACE` in `src/lib/content.ts`).
 
-## Quick start
+> Referenz-Implementierung entspricht dem Projekt **Barist**; für neue Kunden: Copy ersetzen, Assets tauschen, `GOOGLE_PLACE` aktualisieren.
+
+## Schnellstart
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Hero frame-sequence (REQUIRED for the hero to render)
+## Wo du editierst
 
-The hero renders a canvas that swaps frames per scroll position. You need to
-extract those frames from a source video before the site will look right.
+| Thema | Datei |
+|--------|--------|
+| Alle Texte, Links, Google, Video-Pfade | `src/lib/content.ts` |
+| Meta, Poster-Preload | `index.html` |
+| Farben, Fonts, Komponenten-Utilities | `src/index.css` |
+| Hero-Verhalten | `src/components/Hero.tsx` |
 
-### 1. Drop your source video
+## Hero-Assets
 
-```
-input/source.mp4        # 5–15s, ≥1080p, ideally a slow cinematic shot
-```
+Lege ab (oder ersetze die mitgelieferten Beispiele):
 
-### 2. Extract frames (pick one)
+- `public/hero.webm` — VP9, möglichst moderate Bitrate
+- `public/hero.mp4` — **H.264**, `yuv420p`, `+faststart` (Pflicht für iOS)
+- `public/hero-poster.webp` — Standbild
 
-**Option A — local ffmpeg (fastest):**
-```bash
-bash ../scripts/extract-frames.sh 30 jpg
-# Output: public/frames/frame_0001.jpg … frame_NNNN.jpg
-```
+Im Brain-Repo: `../scripts/encode-hero.ps1 -Source pfad\quelle.mp4`
 
-**Option B — no ffmpeg (WASM):**
-```bash
-npm i -D @ffmpeg/ffmpeg @ffmpeg/util
-node ../scripts/extract-frames.mjs 30 jpg
-```
+Optional `.env`:
 
-### 3. Update the frame count
-
-Open `src/lib/constants.ts` and paste the count the script printed:
-
-```ts
-export const FRAME_COUNT = 240; // ← replace with your count
+```env
+# CDN-URL überschreibt lokale Pfade im Hero (siehe Hero.tsx)
+# VITE_HERO_VIDEO_URL=
 ```
 
-### 4. Optional — convert to WebP
+## Google Maps
 
-~40% smaller payload, same visual quality:
+`GOOGLE_PLACE` in `content.ts`: `rating`, `reviewCount`, `label`, `description`, `reviewsUrl`, `directionsUrl`, `embedUrl`. Anleitung zum Ableiten aus der Browser-Maps-Seite: **`../docs/GOOGLE-INGEST.md`** (im übergeordneten „website Brain“-Ordner).
 
-```bash
-for f in public/frames/*.jpg; do
-  cwebp -q 82 "$f" -o "${f%.jpg}.webp" && rm "$f"
-done
-```
+## Projektstart mit Plane + Google-URL
 
-Then in `constants.ts`: `export const FRAME_EXT = "webp" as const;`
+1. Kopiere aus dem Brain-Ordner `inputs/WEBSITE-PLANE.template.md` → **`WEBSITE-PLANE.md`** hier ins Root.
+2. **`GOOGLE.url.txt`** — eine Zeile Maps-URL.
+3. Cursor / Agent: `AGENTS.md` und `docs/GOOGLE-INGEST.md` aus dem Brain lesen und `content.ts` befüllen.
 
-### Size warning
+## Optional: Cinematic Frame-Scrub
 
-Vercel Hobby tier: 25 MB per file, 100 MB per deployment. If `du -sh public/frames`
-exceeds 20 MB, convert to WebP or lower the FPS.
-
-## Content editing
-
-**Every piece of copy lives in one file:** `src/lib/content.ts`.
-
-Change:
-- `LANG` — `"fr-CH"` or `"en-US"`; drives IS_FR flag used in headings.
-- `BRAND` — name, tagline, logo path.
-- `NAV_ITEMS`, `CTA` — nav links, primary CTA.
-- `HERO` — badge, headline (2–5 words), sub, button labels.
-- `PARTNERS` — 5–6 trusted-by logos (rendered as italic display type).
-- `SERVICES` — exactly 6 entries (bento needs 6 cells).
-- `REASONS` — exactly 4 entries.
-- `PROCESS_STEPS` — 3–4 entries.
-- `STATS` — exactly 4 entries, `value` string may include `+`, `%`, `yrs` etc.
-- `TESTIMONIALS` — ≥6 entries.
-- `FAQ_ITEMS` — 5–8 entries.
-- `CTA_SECTION` — final beat headline, sub, pricing CTA label.
-- `FOOTER_LINKS`, `COPYRIGHT`.
-
-## Visual editing
-
-**Palette:** `src/index.css` top — four HSL triplets (`--ink`, `--cream`, `--ochre`, `--terra`).
-
-**Fonts:** `src/index.css` imports — swap the `@fontsource/*` packages and
-update `--font-display` / `--font-body` in both `:root` and `@theme`.
-
-**Liquid-glass:** lives in `src/index.css` `@layer components`. Do not replace
-with regular borders — the `::before` mask is the visual signature.
-
-## Background videos
-
-`STATS_BG_VIDEO` and `CTA_SECTION.bgVideo` in `content.ts` are `.mp4` or
-`.m3u8` URLs. For `.m3u8` you need `hls.js` — install and wire it if you use HLS.
-
-## Verification checklist
-
-See [../docs/CHECKLIST.md](../docs/CHECKLIST.md).
+Komponente `ScrubSequence.tsx` ist enthalten; der **aktuelle** `Hero` nutzt sie nicht. Umbau und Frames: **`../docs/MODE-CINEMATIC-SCRUB.md`** + `../prompt.md`.
 
 ## Build
 
@@ -104,3 +57,5 @@ See [../docs/CHECKLIST.md](../docs/CHECKLIST.md).
 npm run build
 npm run preview
 ```
+
+Checkliste: `../docs/CHECKLIST.md` (Abschnitt Default).

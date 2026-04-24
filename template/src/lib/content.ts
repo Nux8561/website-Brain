@@ -1,146 +1,286 @@
 /**
- * Single source of truth for all copy, services, testimonials, FAQ, CTA, etc.
- * Every section reads from here. To localize the site, edit only this file.
+ * Zentrale Inhalte — Referenz: Barist (de-DE). Für neue Projekte:
+ * WEBSITE-PLANE.md + GOOGLE.url.txt im Projektroot, dann docs/GOOGLE-INGEST.md (Ordner „website Brain“).
  */
 
-export const LANG = "en-US";
+export const LANG = "de-DE";
 export const IS_FR = LANG.startsWith("fr");
 
+/** Leer lassen oder volle Video-URL (WebM/MP4). Überschreibt lokales `public/hero.webm`. */
+export const HERO_VIDEO_REMOTE = "";
+
+export const UI = {
+  trustedBy: "Aus der Region & aus Italien",
+  servicesKicker: "Speisekarte & Stimmung",
+  whyKicker: "La dolce vita",
+  processKicker: "Ihr Abend bei uns",
+  testimonialsKicker: "Gästestimmen",
+  statsKicker: "Öffnungszeiten",
+  statsHeadline: "Wann wir für Sie kochen",
+  faqCta: "Tisch reservieren",
+  mapKicker: "Anfahrt",
+  mapHeadline: "Mitten in Berlin-Mitte",
+};
+
 export const BRAND = {
-  name: "Atelier",
-  tagline: "Built for what's next",
+  name: "Barist",
+  tagline: "Ristorante · Hackescher Markt",
   logoPath: "/logo.svg",
 };
 
+/** Google Maps / Bewertungen — Zahlen bei Bedarf anpassen, wenn sich der Place aktualisiert. */
+export const GOOGLE_PLACE = {
+  rating: 4.4,
+  reviewCount: 2847,
+  label: "Restaurant am Hackescher Markt",
+  description:
+    "Zwischen Museumsinsel, Hackeschen Höfen und Oranienburger Straße — ideal für einen Abend mit Aperitivo, Pasta oder Pizza aus dem Holzofen.",
+  /** Öffnet die Google-Suche zum Lokal (funktioniert ohne Place-ID). */
+  reviewsUrl:
+    "https://www.google.com/maps/search/?api=1&query=Barist+Am+Zwirngraben+11+10178+Berlin&hl=de",
+  directionsUrl:
+    "https://www.google.com/maps/dir/?api=1&destination=Am+Zwirngraben+11,+10178+Berlin&hl=de",
+  embedUrl:
+    "https://maps.google.com/maps?q=Barist+Restaurant+Am+Zwirngraben+11,+10178+Berlin,+Deutschland&hl=de&z=16&ie=UTF8&iwloc=B&output=embed",
+};
+
+export const RESERVE_URL =
+  "https://www.quandoo.de/checkout-widget/widget?agentId=2&merchantId=39204&primaryColor=d8b892&theme=dark&widgetType=calendar&utm_source=barist-website&utm_medium=widget-link-home";
+
+export const MENU_URL = "https://barist.de/speisekarte/";
+
+export const HERO_VIDEO: {
+  srcWebm: string;
+  srcMp4?: string;
+  poster?: string;
+} = {
+  srcWebm: "/hero.webm",
+  /** H.264 für Safari / iOS (WebM allein reicht dort oft nicht). */
+  srcMp4: "/hero.mp4",
+  poster: "/hero-poster.webp",
+};
+
 export const NAV_ITEMS: { label: string; href: string }[] = [
-  { label: "Services", href: "#services" },
-  { label: "Why us", href: "#why" },
-  { label: "Process", href: "#process" },
-  { label: "Testimonials", href: "#testimonials" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Speisekarte", href: "#services" },
+  { label: "Stimmung", href: "#why" },
+  { label: "Ablauf", href: "#process" },
+  { label: "Zeiten", href: "#hours" },
+  { label: "Gäste", href: "#testimonials" },
+  { label: "Anfahrt", href: "#lage" },
+  { label: "Fragen", href: "#faq" },
 ];
 
 export const CTA = {
-  label: "Get Started",
-  href: "#cta",
+  label: "Tisch reservieren",
+  href: RESERVE_URL,
 };
 
 export const HERO = {
-  badge: IS_FR ? "Nouveau" : "New",
-  headline: "Move, quietly.",
-  sub: "One move. Zero friction. The craft of relocation, signed Atelier.",
-  primary: "Start now",
-  secondary: "Watch film",
+  badge: "Hackescher Markt · Berlin-Mitte",
+  headline: "Italienischer Genuss",
+  headlineLine2: "im Herzen Berlins",
+  sub:
+    "Holzofen, gedämpftes Licht, der Duft von Kräutern und frischem Teig — hier trifft italienische Küche auf die Seele der Stadt. Kommen Sie vorbei: ein Glas Wein, ein Teller Pasta, und der Abend gehört Ihnen.",
+  primary: "Tisch reservieren",
+  secondary: "Zur Speisekarte",
 };
 
 export const PARTNERS: string[] = [
-  "Christie's",
-  "Sotheby's",
-  "Piaget",
-  "Hermès",
-  "Rolex",
+  "Pizza al forno",
+  "Pasta fatta in casa",
+  "Vini italiani",
+  "Cocktail & Aperitivo",
 ];
 
 export type IconName =
-  | "Truck" | "Package" | "Warehouse" | "Globe" | "Building2" | "Sparkles"
-  | "ShieldCheck" | "Clock" | "Leaf" | "Award";
+  | "Flame"
+  | "UtensilsCrossed"
+  | "Wine"
+  | "MapPin"
+  | "Clock"
+  | "Heart";
 
-export const SERVICES_HEADLINE = IS_FR
-  ? "Tout ce qui bouge. Sous un seul toit."
-  : "Everything that moves. Under one roof.";
+export const SERVICES_HEADLINE = "Was Sie bei uns erwarten dürfen";
 
-export const SERVICES: { icon: IconName; title: string; body: string }[] = [
-  { icon: "Truck",     title: "Relocation",   body: "Door-to-door white-glove relocation. Every object logged, wrapped, insured." },
-  { icon: "Package",   title: "Packing",      body: "Custom crates for fine art, antiques, and furniture. Museum-grade materials." },
-  { icon: "Warehouse", title: "Storage",      body: "Climate-controlled vaults. 24/7 monitoring. Flexible terms." },
-  { icon: "Globe",     title: "International", body: "Customs, shipping, and settling-in — handled end-to-end across 40+ countries." },
-  { icon: "Building2", title: "Offices",      body: "Weekend-overnight corporate relocations with zero downtime." },
-  { icon: "Sparkles",  title: "Bespoke",      body: "A piano at 3am. A vault at 3m deep. If it's complex, it's ours." },
+export const SERVICES: {
+  icon: IconName;
+  title: string;
+  body: string;
+  image: string;
+}[] = [
+  {
+    icon: "Flame",
+    title: "Holzofen & Pizza",
+    body: "Knuspriger Boden, sanftes Raucharoma — so, wie Pizza in Neapel gemeint ist.",
+    image:
+      "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=900&q=75",
+  },
+  {
+    icon: "UtensilsCrossed",
+    title: "Pasta & Antipasti",
+    body: "Frische Saucen, bestes Olivenöl, ehrliche Portionen zum Teilen oder für sich allein.",
+    image:
+      "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=900&q=75",
+  },
+  {
+    icon: "Wine",
+    title: "Wein & Bar",
+    body: "Vom Hauswein bis zur Flasche Barolo — und dazu ein Negroni, der sitzt.",
+    image:
+      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=900&q=75",
+  },
+  {
+    icon: "MapPin",
+    title: "Die Lage",
+    body: "Zwischen Hackeschen Höfen und Museumsinsel — perfekt vor dem Theater oder der Galerie.",
+    image:
+      "https://images.unsplash.com/photo-1560969184-10fb871307e9?auto=format&fit=crop&w=900&q=75",
+  },
+  {
+    icon: "Clock",
+    title: "Service",
+    body: "Herzlich, aufmerksam, mit Berliner Tempo — auch wenn alle Tische besetzt sind.",
+    image:
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=75",
+  },
+  {
+    icon: "Heart",
+    title: "Ambiente",
+    body: "Kerzenlicht, warme Wände, leise Musik — ein Ort für Dates, Familie und alte Freunde.",
+    image:
+      "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=900&q=75",
+  },
 ];
 
-export const REASONS_HEADLINE = IS_FR
-  ? "Pourquoi nous choisir."
-  : "Why choose us.";
+export const REASONS_HEADLINE = "Warum Gäste wiederkommen";
 
-export const REASONS_SUB = IS_FR
-  ? "Quatre raisons, signées dans chaque contrat."
-  : "Four reasons, signed into every contract.";
+export const REASONS_SUB = "Kurz gesagt: ehrliches Essen, echte Atmosphäre, mitten im schönsten Berlin.";
 
 export const REASONS: { icon: IconName; title: string; body: string }[] = [
-  { icon: "ShieldCheck", title: "Fully insured",    body: "Full replacement value coverage on every engagement — no exceptions, no exclusions." },
-  { icon: "Clock",       title: "On time",          body: "Punctuality written into the contract. Miss the window, discount the invoice." },
-  { icon: "Leaf",        title: "Low impact",       body: "Reusable crates, biofuel fleet, carbon-offset on every route." },
-  { icon: "Award",       title: "Certified",        body: "Swiss Moving Association, FIDI FAIM, ISO 9001. Audited annually." },
+  {
+    icon: "Heart",
+    title: "Gastfreundschaft",
+    body: "Bei uns ist jeder willkommen — ob Berliner Stammgast oder Besuch aus der Ferne.",
+  },
+  {
+    icon: "Clock",
+    title: "Berliner Puls",
+    body: "Draußen die Stadt, drinnen ein Innehalten — und trotzdem kein steifer Salon.",
+  },
+  {
+    icon: "Wine",
+    title: "Zum Anstoßen",
+    body: "Aperitivo an der Bar, Wein zum Gang, Digestif zum Ausklang — wie in Italien üblich.",
+  },
+  {
+    icon: "Flame",
+    title: "Aus dem Ofen",
+    body: "Was aus dem Feuer kommt, schmeckt man — und riecht man schon beim Reinkommen.",
+  },
 ];
 
-export const PROCESS_HEADLINE = IS_FR
-  ? "Quatre étapes. Zéro friction."
-  : "Four steps. Zero friction.";
+export const PROCESS_HEADLINE = "So läuft Ihr Abend";
 
 export const PROCESS_STEPS: { n: string; title: string; body: string }[] = [
-  { n: "1", title: "Brief",   body: "A 30-minute call or in-home visit. We map what moves, when, and how." },
-  { n: "2", title: "Plan",    body: "Detailed quote within 24 hours. Fixed price, itemized, no surprises." },
-  { n: "3", title: "Move",    body: "On the day: a dedicated team, a single point of contact, live updates." },
-  { n: "4", title: "Settle",  body: "Unpacking, placement, disposal of packing material. You open doors, we close the job." },
+  {
+    n: "1",
+    title: "Tisch sichern",
+    body: "Online reservieren oder anrufen — abends besonders empfohlen.",
+  },
+  {
+    n: "2",
+    title: "Ankommen & anstoßen",
+    body: "Wir bringen Sie zu Ihrem Platz, Wasser und Brot stehen bereit, der Aperitivo wartet.",
+  },
+  {
+    n: "3",
+    title: "Genießen",
+    body: "Von der Vorspeise bis zum Dolce — in Ihrem Tempo, mit unseren Empfehlungen.",
+  },
+  {
+    n: "4",
+    title: "Noch ein Glas?",
+    body: "Espresso, Grappa oder ein letzter Spritz — der Abend endet, wenn Sie es sagen.",
+  },
 ];
 
-export const STATS_BG_VIDEO = "https://stream.mux.com/placeholder.m3u8";
-
-export const STATS: { value: string; label: string }[] = [
-  { value: "2500+", label: "Relocations" },
-  { value: "98%",   label: "Client satisfaction" },
-  { value: "24h",   label: "Quote turnaround" },
-  { value: "15 yrs",label: "In the trade" },
+export const OPENING_ROWS: { days: string; hours: string }[] = [
+  { days: "Montag – Donnerstag", hours: "12:00 – 24:00 Uhr" },
+  { days: "Freitag – Samstag", hours: "12:00 – 01:00 Uhr" },
+  { days: "Sonntag", hours: "12:00 – 24:00 Uhr" },
 ];
 
-export const TESTIMONIALS_HEADLINE = IS_FR
-  ? "Ils parlent mieux que nous."
-  : "Don't take our word for it.";
+export const OPENING_NOTE =
+  "Küche durchgehend warm — bei schönem Wetter zusätzlich Sitzplätze draußen (je nach Saison).";
+
+export const TESTIMONIALS_HEADLINE = "Was Google-Gäste sagen";
 
 export const TESTIMONIALS: { quote: string; name: string; role: string }[] = [
-  { quote: "They moved a 400-year-old harpsichord without a scratch. I didn't think that was possible.", name: "Claire Lambert",    role: "Collector, Geneva" },
-  { quote: "We relocated an entire floor over a weekend. Monday morning, nobody noticed anything had moved.", name: "Marc Dubois",        role: "COO, FinTech SA" },
-  { quote: "The level of attention to detail is absurd in the best way. Every box, numbered and photographed.", name: "Sofia Renard",       role: "Private Client" },
-  { quote: "Swiss precision is a cliché until you see it applied to a moving truck.",                      name: "Jan Hartmann",       role: "CEO, Zurich" },
-  { quote: "I've used five movers in ten years. None came close.",                                         name: "Elena Visconti",     role: "Art Advisor, Milan" },
-  { quote: "They packed a Calder mobile in a custom crate built overnight. Overnight.",                   name: "David Okonkwo",      role: "Gallerist, London" },
+  {
+    quote:
+      "Pizza und Pasta sind zu empfehlen. Auch die Steaks waren bisher immer super. Großer Außenbereich ist vorhanden. Der Service ist auf Zack und gibt wirklich sein Bestes.",
+    name: "Thorsten Dreistein",
+    role: "Google Bewertung",
+  },
+  {
+    quote:
+      "Salat und Pizza top. Preis-Leistung ist angemessen für die Gegend. Gerne wieder. Uns allen hat es super gut gefallen, das Essen war lecker, ebenso die Getränke.",
+    name: "Carolyn Silverpine",
+    role: "Google Bewertung",
+  },
+  {
+    quote:
+      "Sehr nette Bedienung, tolles Essen und super Cocktails. Die Preise hier sind sehr akzeptabel, da man hier auch was für sein Geld bekommt. Ich kann das Barist nur empfehlen.",
+    name: "Marlies Dohr",
+    role: "Google Bewertung",
+  },
 ];
 
-export const FAQ_HEADLINE = IS_FR
-  ? "Questions fréquentes."
-  : "Frequently asked.";
+export const FAQ_HEADLINE = "Häufige Fragen";
 
-export const FAQ_SUB = IS_FR
-  ? "Rien trouvé ici ? Un entretien de 15 minutes répond à tout."
-  : "Not here? A 15-minute call answers the rest.";
+export const FAQ_SUB = "Wenn Ihre Frage nicht dabei ist, rufen Sie uns an — wir beraten Sie gern.";
 
 export const FAQ_ITEMS: { q: string; a: string }[] = [
-  { q: "How far in advance should I book?",
-    a: "Two to four weeks for standard moves. For international or specialty (pianos, art, vaults), six to eight weeks is ideal — but we've turned around 72-hour emergency moves." },
-  { q: "Do you handle fine art and antiques?",
-    a: "Yes — this is a core specialty. We work with custom crating, conservation-grade materials, climate-controlled transit, and can coordinate with your insurer and conservator." },
-  { q: "What's included in the quote?",
-    a: "Packing materials, labor, transit, insurance, unpacking, and disposal of packing. Storage, customs, and specialty crating are line-itemed separately and disclosed up-front." },
-  { q: "Are you insured?",
-    a: "Fully. Every move carries full replacement value coverage. You receive the certificate before the truck arrives." },
-  { q: "Can you store items between moves?",
-    a: "Yes. Climate-controlled vaults in Geneva, Zurich, and Lugano. Minimum one month, flexible from there. 24/7 security and environmental monitoring." },
-  { q: "Do you move internationally?",
-    a: "Yes — 40+ countries. We handle customs, documentation, shipping, settling-in, and local compliance. Partner network audited to our own standard." },
+  {
+    q: "Brauche ich eine Reservierung?",
+    a: "Mittags oft spontan möglich. Abends und am Wochenende empfehlen wir eine Reservierung — am schnellsten über den Link auf dieser Seite.",
+  },
+  {
+    q: "Wo liegt das Restaurant?",
+    a: "Am Zwirngraben 11–12, 10178 Berlin, direkt am Hackescher Markt. Routenplaner finden Sie weiter unten auf der Karte.",
+  },
+  {
+    q: "Gibt es die Speisekarte online?",
+    a: "Ja — unter „Zur Speisekarte“ öffnet sich unsere aktuelle Karte.",
+  },
+  {
+    q: "Ist das Restaurant für Feiern geeignet?",
+    a: "Für kleinere Runden und besondere Abende sehr gut — sprechen Sie uns für größere Gruppen am besten direkt an.",
+  },
+  {
+    q: "Telefonisch erreichbar?",
+    a: "Unter +49 (0)30 24722613 — wir helfen bei Tischwünschen und Fragen zum Lokal.",
+  },
 ];
 
 export const CTA_SECTION = {
-  headline: IS_FR ? "Prêts à partir ?" : "Ready to move?",
-  sub: IS_FR ? "Un entretien. Un plan. Un déménagement." : "One call. One plan. One move.",
-  bgVideo: "https://stream.mux.com/placeholder-cta.m3u8",
-  secondary: IS_FR ? "Nos tarifs" : "Pricing",
+  headline: "Buon appetito in Berlin",
+  sub: "Wir freuen uns darauf, Sie mit italienischer Herzlichkeit zu bewirten — buchen Sie Ihren Tisch und kommen Sie vorbei.",
+  secondary: "Speisekarte öffnen",
 };
 
 export const FOOTER_LINKS: { label: string; href: string }[] = [
-  { label: "Legal",     href: "/legal" },
-  { label: "Privacy",   href: "/privacy" },
-  { label: "Terms",     href: "/terms" },
-  { label: "Contact",   href: "/contact" },
+  { label: "Speisekarte", href: MENU_URL },
+  { label: "Reservierung", href: RESERVE_URL },
+  { label: "Google & Karte", href: "#lage" },
+  { label: "Kontakt", href: "#kontakt" },
 ];
 
-export const COPYRIGHT = `© ${new Date().getFullYear()} ${BRAND.name}. All rights reserved.`;
+export const COPYRIGHT = `© ${new Date().getFullYear()} ${BRAND.name} · Am Zwirngraben 11–12, Berlin`;
+
+export const CONTACT = {
+  street: "Am Zwirngraben 11–12",
+  zip: "10178 Berlin",
+  phone: "+49 (0)30 24722613",
+  phoneHref: "tel:+493024722613",
+};

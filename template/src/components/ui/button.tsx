@@ -15,7 +15,8 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground rounded-md",
         link: "text-primary underline-offset-4 hover:underline",
         hero: "bg-primary text-primary-foreground rounded-full px-7 py-3.5 text-base font-medium tracking-[-0.01em] hover:bg-primary/90 transition-colors",
-        heroGlass: "liquid-glass-strong text-foreground rounded-full px-7 py-3.5 text-base font-normal tracking-[-0.01em] hover:bg-white/5 transition-colors",
+        heroGlass:
+          "rounded-full px-7 py-3.5 text-base font-normal tracking-[-0.01em] transition-colors border border-primary/35 bg-black/25 text-foreground hover:bg-black/35 hover:border-primary/50 backdrop-blur-sm",
         heroSolid: "bg-foreground text-background rounded-full px-7 py-3.5 text-base font-medium tracking-[-0.01em] hover:bg-foreground/90 transition-colors",
       },
       size: {

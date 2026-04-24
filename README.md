@@ -1,44 +1,47 @@
 # Website Brain — Werkzeugkoffer
 
-Langfristiges Toolkit, um aus einem 1-Shot-Prompt (`prompt.md`) eine komplette cinematische Landing-Page zu bauen.
+Wiederverwendbares Toolkit für **Premium-Landingpages** (Vite + React 18 + TypeScript + Tailwind v4). Der referenzierte Stand in **`template/`** entspricht dem **Barist-Erfolgsprojekt**: Video-Hero (WebM + **MP4 für Safari**), Google-Bewertung, Karten-Embed, Bento, FAQ — alles zentral in **`src/lib/content.ts`**.
 
-## Struktur
+## Ordnerstruktur
 
 ```
 website Brain/
-├── prompt.md              # DER Mega-Prompt (HEILIG, nicht verändern)
-├── template/              # fertiges Vite+React+TS Boilerplate
-├── scripts/               # ffmpeg Frame-Extraktion (Bash + Node WASM)
-└── docs/                  # Usage, Placeholder-Beispiele, Checklisten
+├── AGENTS.md                 # Kurzbrief für Cursor / Coding-Agenten
+├── README.md                 # diese Datei
+├── prompt.md                 # Mega-Prompt für den Cinematic FRAME-SCRUB-Modus (Legacy-Spezifikation)
+├── inputs/                   # Vorlagen pro Kundenprojekt
+│   ├── README.md
+│   ├── WEBSITE-PLANE.template.md
+│   └── GOOGLE.url.example.txt
+├── docs/
+│   ├── FAST-TRACK.md         # schnellster Einstieg (Plane + Google)
+│   ├── GOOGLE-INGEST.md      # Maps-Daten → content.ts
+│   ├── MODE-CINEMATIC-SCRUB.md
+│   ├── USAGE.md              # beide Modi
+│   ├── CHECKLIST.md
+│   └── PLACEHOLDER_EXAMPLES.md
+├── scripts/
+│   ├── extract-frames.sh / .mjs   # nur für Scrub-Modus
+│   └── encode-hero.ps1            # Windows: Hero WebM + MP4 + Poster
+└── template/                 # kopierfertiges Vite-Projekt (Default = Video + Google)
 ```
 
-## Workflow (neues Projekt starten)
+## Workflow — neues Projekt (empfohlen)
 
-1. `template/` in den neuen Projektordner kopieren.
-2. Source-Video nach `input/source.mp4` legen.
-3. Frames extrahieren:
-   ```bash
-   bash ../scripts/extract-frames.sh 30 jpg
-   ```
-   (Parameter = FPS und Extension)
-4. `src/lib/constants.ts` – `FRAME_COUNT` eintragen (Output aus Schritt 3).
-5. `src/lib/content.ts` – Copy, Services, Testimonials, FAQ etc. befüllen.
-6. `npm install && npm run dev`.
+1. **`template/`** in den Zielordner kopieren → `npm install`.
+2. **`inputs/WEBSITE-PLANE.template.md`** → im Zielprojekt als **`WEBSITE-PLANE.md`** speichern und ausfüllen.
+3. **`GOOGLE.url.txt`** im Zielprojektroot: **eine Zeile** Google-Maps-URL (siehe `inputs/GOOGLE.url.example.txt`).
+4. Cursor mit **`AGENTS.md`** + **`docs/GOOGLE-INGEST.md`** füttern oder Regel **`/.cursor/rules/website-brain.mdc`** ins Projekt übernehmen.
+5. Hero-Assets: **`encode-hero.ps1`** oder eigene Pipeline → `public/hero.webm`, `public/hero.mp4`, `public/hero-poster.webp`.
+6. **`npm run dev`** → [docs/CHECKLIST.md](docs/CHECKLIST.md) (Abschnitt Default).
 
-## Werkzeugkasten (Tech-Stack)
+## Zwei Modi
 
-Laut `prompt.md` (non-negotiable):
-- Vite + React 18 + TypeScript
-- Tailwind CSS v4 (mit `@theme`)
-- shadcn/ui (Button, Accordion)
-- Framer Motion (`motion/react`)
-- lucide-react
-- `@fontsource/*`
+| Modus | Hero | Doku |
+|--------|------|------|
+| **Default** | `<video>` WebM + MP4, `HERO_VIDEO` in `content.ts` | [docs/FAST-TRACK.md](docs/FAST-TRACK.md) |
+| **Cinematic Scrub** | Canvas + `public/frames/*` | [prompt.md](prompt.md), [docs/MODE-CINEMATIC-SCRUB.md](docs/MODE-CINEMATIC-SCRUB.md) |
 
-Hero-Interaktion: Scroll-gescrubbte Canvas-Frame-Sequence (Apple AirPods Pro Pattern).
+## Tech (unverändert zentral)
 
-## Docs
-
-- [docs/USAGE.md](docs/USAGE.md) — Schritt-für-Schritt-Anleitung.
-- [docs/PLACEHOLDER_EXAMPLES.md](docs/PLACEHOLDER_EXAMPLES.md) — Beispiele pro Placeholder.
-- [docs/CHECKLIST.md](docs/CHECKLIST.md) — Pre-Ship-Verification.
+- Vite, React 18, TS, Tailwind v4 `@theme`, shadcn/ui (Button, Accordion), `motion`, lucide-react, `@fontsource/*`.
